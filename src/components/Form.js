@@ -45,7 +45,7 @@ const Form = ({ search, saveSearch, saveConsult }) => {
         >
           <option value="">-- Select a country --</option>
           <option value="ES">España</option>
-          <option value="PO">Poland</option>
+          <option value="PL">Poland</option>
         </select>
         <label htmlFor="country">Country: </label>
       </div>

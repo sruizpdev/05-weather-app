@@ -1,6 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Header from './components/Header';
 import Form from './components/Form';
+import Weather from './components/Weather';
+import Error from './components/Error';
 
 function App() {
   const [search, saveSearch] = useState({
@@ -10,6 +12,7 @@ function App() {
   const { city, country } = search;
   const [consult, saveConsult] = useState(false);
   const [weather, saveWeather] = useState({});
+  const [error, saveError] = useState(false);
 
   useEffect(() => {
     const searchApi = async () => {
@@ -19,10 +22,23 @@ function App() {
         const resp = await fetch(url);
         const result = await resp.json();
         saveWeather(result);
+        saveConsult(false);
+        if (result.cod === '404') {
+          saveError(true);
+        } else {
+          saveError(false);
+        }
       }
     };
     searchApi();
   }, [consult]);
+
+  let component;
+  if (error) {
+    component = <Error message="No results" />;
+  } else {
+    component = <Weather weather={weather} />;
+  }
 
   return (
     <Fragment>
@@ -37,7 +53,7 @@ function App() {
                 saveConsult={saveConsult}
               />
             </div>
-            <div className="col m6 s12">2</div>
+            <div className="col m6 s12">{component}</div>
           </div>
         </div>
       </div>
